@@ -4,3 +4,4 @@ jinja2
 aiofiles
 yt-dlp
 python-multipart
+slowapi
