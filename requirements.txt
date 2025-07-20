@@ -1,8 +1,8 @@
+slowapi
 fastapi
 uvicorn
 jinja2
 aiofiles
 yt-dlp
 python-multipart
-slowapi==0.1.4
 
