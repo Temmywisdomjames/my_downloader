@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cool Video Downloader</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/styles.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    /* Optional: style the multi-url textarea to match form controls */
+    #multi-url-input {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      padding: 0.5rem;
+      font-family: inherit;
+      font-size: 1rem;
+      border-radius: 0.375rem;
+      border: 1px solid #ced4da;
+    }
+    /* Tooltip styling */
+    [data-tooltip] {
+      position: relative;
+      cursor: help;
+    }
+    [data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      font-size: 0.875rem;
+      z-index: 1000;
+      opacity: 1;
+      pointer-events: none;
+    }
+    [data-tooltip]::after {
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    /* Tooltip question mark style */
+    .tooltip {
+      font-weight: 600;
+      margin-left: 5px;
+      color: #0d6efd;
+      cursor: help;
+      user-select: none;
+    }
+  </style>
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <h1 class="mb-4 text-center">Multi-Platform Video Downloader</h1>
+
+    <div class="text-center mb-4">
+      <button id="dark-mode-toggle" class="btn btn-secondary" data-tooltip="Toggle light/dark mode">Toggle Dark Mode</button>
+    </div>
+
+    <!-- Single URL download form -->
+    <form id="url-form" class="mb-3" aria-label="Single video URL download form">
+      <div class="input-group">
+        <input
+          type="url"
+          id="video-url"
+          class="form-control"
+          placeholder="Enter video URL"
+          aria-label="Video URL"
+          required
+          data-tooltip="Paste or drag a video URL here"
+        />
+        <button type="submit" class="btn btn-primary" data-tooltip="Fetch video info">Fetch Info</button>
+      </div>
+
+      <div class="form-check mt-2">
+        <input class="form-check-input" type="checkbox" id="audio-only" aria-describedby="audio-only-tooltip" />
+        <label class="form-check-label" for="audio-only">Download audio only</label>
+        <span id="audio-only-tooltip" class="tooltip" data-tooltip="Download audio only (m4a format)">❔</span>
+      </div>
+    </form>
+
+    <div class="alert alert-info mt-3" role="region" aria-live="polite">
+      🎧 Supported Platforms: YouTube, TikTok, Instagram, Facebook, Twitter, Vimeo, SoundCloud, Reddit, etc.
+    </div>
+
+    <!-- Video info card for single URL -->
+    <div id="video-info" style="display:none;" aria-live="polite">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img id="thumbnail" src="" alt="Video thumbnail" class="img-fluid rounded-start" />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title" id="title"></h5>
+              <p class="card-text" id="uploader"></p>
+              <p class="card-text"><small id="duration" class="text-muted"></small></p>
+              <p class="card-text"><small id="site-name" class="text-muted"></small></p>
+
+              <label for="format-select" class="form-label">Select Format:</label>
+              <select id="format-select" class="form-select" aria-label="Select video format"></select>
+
+              <!-- Subtitles dropdown -->
+              <label for="subtitle-select" class="form-label mt-3">Select Subtitle:</label>
+              <select id="subtitle-select" class="form-select" aria-label="Select subtitles">
+                <option value="">No Subtitles</option>
+              </select>
+
+              <button id="download-btn" class="btn btn-success mt-3" data-tooltip="Download the selected format">Download</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video preview -->
+      <video id="video-preview" controls style="max-width:100%; border-radius:8px; margin-top:15px; display:none;"></video>
+    </div>
+
+    <div id="progress-section" style="display:none;" aria-live="polite" aria-atomic="true">
+      <h5>Download Progress</h5>
+      <div class="progress">
+        <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+      </div>
+      <p id="progress-text"></p>
+    </div>
+
+    <div id="download-link" style="display:none;" class="mt-3">
+      <a id="file-link" href="#" class="btn btn-primary" download>Click here to download your video</a>
+    </div>
+
+    <div id="error-msg" class="alert alert-danger mt-3" style="display:none;" role="alert"></div>
+
+    <hr class="my-5" />
+
+    <!-- Multi-URL input and download all -->
+    <div class="mb-3">
+      <label for="multi-url-input" class="form-label">Download Multiple URLs</label>
+      <textarea
+        id="multi-url-input"
+        class="form-control"
+        placeholder="One URL per line"
+        aria-label="Multiple video URLs input"
+        data-tooltip="Paste multiple URLs here, one per line"
+      ></textarea>
+    </div>
+    <button id="multi-download-btn" class="btn btn-primary mb-3" data-tooltip="Download all listed URLs">Download All</button>
+
+    <!-- ✅ Integrated Here -->
+    <div id="multi-progress" class="mb-3" aria-live="polite"></div>
+  </div>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
